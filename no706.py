@@ -1,5 +1,3 @@
-# https://leetcode.com/problems/design-hashmap/
-
 import collections
 
 class ListNode:
@@ -68,17 +66,22 @@ class MyHashMap(object):
         :rtype: None
         """
         index = key % self.size
+
         if self.table[index].value is None:
             return
         
         p = self.table[index]
+        # 동일한 index에 여러개의 Node가 연결된 경우 key값이 동일한 Node만 제거
+        # 연결된 Node가 없을 경우 빈 연결리스트 삽입
         if p.key == key:
-            self.table[index] = ListNode() if p.next is None else p.next
+            self.table[index] = ListNode() if p.next is None else p.next  
             return
         
+        # 첫번째 Node의 키값이 입력된 키값과 같지 않으면 while loop을 돌면서 동일한 키값을 가진 Node를 찾아 삭제한다
+        # 연결리스트의 중간의 값을 지우도 다시 연결을 해주는 방식으로 값을 삭제한다
         prev = p
         while p:
             if p.key == key:
-                prev.next = p.next
+                prev.next = p.next  # 삭제한 Node의 앞뒤 Node들을 연결해줌
                 return
             prev, p = p, p.next
